@@ -2,7 +2,7 @@
 eip: (TBD — assigned on PR)
 title: Agent Code Integrity Verification Standard
 description: A standard for runtime code integrity verification of AI agents using ZK proofs, extending ERC-8126
-author: (your name/handle)
+author: lejuho(@lejuho)
 discussions-to: (Ethereum Magicians URL — create thread first)
 status: Draft
 type: Standards Track
