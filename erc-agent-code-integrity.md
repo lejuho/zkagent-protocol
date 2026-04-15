@@ -130,14 +130,20 @@ reduce recursive proof aggregation costs to
 practical levels for per-call verification.
 
 **Condition 3: The standard layer is unoccupied**
-ERC-8004 identifies validation as a necessary
-component of trustless agents but explicitly
-leaves the validation mechanism unspecified.
-ERC-8126 provides the registration and
-crypto-economic infrastructure but does not
+ERC-8004 defines three on-chain registries
+(Identity, Reputation, Validation) and deployed
+on Ethereum Mainnet on January 29, 2026. Its
+Validation Registry is deliberately unopinionated
+about implementation — it defines hooks for
+requesting and recording independent validator
+checks but does not specify what those checks
+must verify. ERC-8126 provides agent registration
+and crypto-economic infrastructure but does not
 define code integrity verification. This ERC
 occupies the gap both standards deliberately
-leave open.
+leave open, providing a code integrity-specific
+implementation of the ERC-8004 Validation
+Registry hook.
 
 ### Design Goals
 
@@ -1831,10 +1837,29 @@ as the `sigstoreBundle` field.
 
 ### 6.3 ERC-8004 Compatibility
 
-This standard's `IVerificationHook` is designed to
-be registerable as an ERC-8004 validation hook,
-allowing ERC-8004 consumers to query code integrity
-results through the ERC-8004 interface.
+ERC-8004 deployed on Ethereum Mainnet on
+January 29, 2026. Its Validation Registry
+defines a pluggable hook interface for
+independent validator checks.
+
+This standard's IVerificationHook is designed
+to register directly into the ERC-8004
+Validation Registry, allowing ERC-8004
+consumers to query code integrity verification
+results through the existing ERC-8004 interface
+without modification.
+ERC-8004 ValidationRegistry
+→ calls IVerificationHook.verify()
+→ receives (bool valid, uint8 trustScore)
+→ records result in ERC-8004 format
+→ ERC-8004 consumers see code integrity
+as one validation signal among others
+
+This composability is the primary integration
+path: rather than a parallel ecosystem, this
+standard plugs into the deployed ERC-8004
+infrastructure as a specialised code integrity
+validation provider.
 
 ### 6.4 ERC-8150 Compatibility
 
